@@ -47,13 +47,24 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     "Device doesnot support bluetooth connectivity",
                     Toast.LENGTH_SHORT).show();
+            mConnectButton.setEnabled(false);
+            mUserEditText.setEnabled(false);
+            mSendButton.setEnabled(false);
+            mCloseButton.setEnabled(false);
         }
         else{
             Toast.makeText(getApplicationContext(),
                     "Device support bluetooth connectivity",
                     Toast.LENGTH_SHORT).show();
+            mConnectButton.setEnabled(true);
+            mUserEditText.setVisibility(View.INVISIBLE);
+            mSendButton.setVisibility(View.INVISIBLE);
+            mCloseButton.setVisibility(View.INVISIBLE);
         }
 
+        /*
+        Button Callback Methods
+         */
         mConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,34 +73,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                 }
-
-                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-                if (pairedDevices.size() > 0) {
-                    // There are paired devices. Get the name and address of each paired device.
-                    for (BluetoothDevice device : pairedDevices) {
-                        String deviceName = device.getName();
-                        String deviceHardwareAddress = device.getAddress(); // MAC address
-
-                        /*Toast.makeText(getApplicationContext(),
-                                "Name: "+deviceName +" "+deviceHardwareAddress,
-                                Toast.LENGTH_SHORT).show();*/
-
-                        if(device.getAddress().matches("^CC:93:4A:00:67:FE$")){
-                            Toast.makeText(getApplicationContext(),"Device found",
-                                    Toast.LENGTH_SHORT).show();
-
-                            mConnectThread = new ConnectThread(device, mBluetoothAdapter);
-                            new Thread(mConnectThread).start();
-                        }
-
-                    }
-                }
-
+                connectBTDevice();
             }
         });
-
-
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,11 +89,49 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try{
                     mConnectThread.cancel();
+                    mConnectButton.setEnabled(true);
+                    mUserEditText.setVisibility(View.INVISIBLE);
+                    mSendButton.setVisibility(View.INVISIBLE);
+                    mCloseButton.setVisibility(View.INVISIBLE);
                 }catch(Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
         });
+
+    }
+
+    private void connectBTDevice(){
+
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        if (pairedDevices.size() > 0) {
+            // There are paired devices. Get the name and address of each paired device.
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress(); // MAC address
+
+                        /*Toast.makeText(getApplicationContext(),
+                                "Name: "+deviceName +" "+deviceHardwareAddress,
+                                Toast.LENGTH_SHORT).show();*/
+
+                if(device.getAddress().matches("^CC:93:4A:00:67:FE$")){
+                    Toast.makeText(getApplicationContext(),"Device Connected!",
+                            Toast.LENGTH_SHORT).show();
+
+                    mConnectThread = new ConnectThread(device, mBluetoothAdapter);
+                    new Thread(mConnectThread).start();
+
+                    Toast.makeText(getApplicationContext(),"Ready for communication!",
+                            Toast.LENGTH_SHORT).show();
+                    mConnectButton.setEnabled(false);
+                    mUserEditText.setVisibility(View.VISIBLE);
+                    mSendButton.setVisibility(View.VISIBLE);
+                    mCloseButton.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }
 
     }
 
@@ -129,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else{
-            Log.i("Info","Request code incorrect");
+            Log.i("Info","Improper request code");
         }
     }
 
@@ -139,10 +163,18 @@ public class MainActivity extends AppCompatActivity {
         byte[] printerInput = null;
 
         try {
-            printerInput = dataToPrintInString.getBytes("UTF-8");
-            transfer(printerInput);
+            if(dataToPrintInString.isEmpty()){
+                Toast.makeText(getApplicationContext(),"Oops! Your string is empty..",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else{
+                printerInput = dataToPrintInString.getBytes("UTF-8");
+                transfer(printerInput);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        } catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 
