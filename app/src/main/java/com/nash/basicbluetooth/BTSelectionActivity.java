@@ -42,8 +42,6 @@ public class BTSelectionActivity extends AppCompatActivity {
     //List view representing all the BT Devices
     private ListView mDevicesListView;
 
-    public static ConnectThread mConnectThread;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

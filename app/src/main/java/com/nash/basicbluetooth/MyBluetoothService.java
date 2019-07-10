@@ -76,28 +76,8 @@ public class MyBluetoothService {
         }
 
         // Call this from the main activity to send data to the remote device.
-        public void write(byte[] bytes) {
-            try {
+        public void write(byte[] bytes) throws IOException {
                 mmOutStream.write(bytes);
-
-                // Share the sent message with the UI activity.
-                Message writtenMsg = handler.obtainMessage(
-                        MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
-                writtenMsg.sendToTarget();
-            } catch (IOException e) {
-                Log.e(TAG, "Error occurred when sending data", e);
-
-                // Send a failure message back to the activity.
-                Message writeErrorMsg =
-                        handler.obtainMessage(MessageConstants.MESSAGE_TOAST);
-                Bundle bundle = new Bundle();
-                bundle.putString("toast",
-                        "Couldn't send data to the other device");
-                writeErrorMsg.setData(bundle);
-                handler.sendMessage(writeErrorMsg);
-            } catch (NullPointerException e) {
-                Log.e(TAG, "Message has a null pointer reference, Check it out");
-            }
         }
 
         // Call this method from the main activity to shut down the connection.

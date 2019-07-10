@@ -69,9 +69,11 @@ class ConnectThread extends Thread {
         myConnectedThread = new MyBluetoothService.ConnectedThread(mmSocket);
 
         new Thread(myConnectedThread).start();
+
+        //cancel();
     }
 
-    public void writeData(byte[] writeBuffer) {
+    public void writeData(byte[] writeBuffer) throws IOException{
         myConnectedThread.write(writeBuffer);
     }
 
@@ -79,7 +81,6 @@ class ConnectThread extends Thread {
     public void cancel() {
         try {
             mmSocket.close();
-            myConnectedThread.cancel();
         } catch (IOException e) {
             Log.e(TAG, "Could not close the client socket", e);
         }
