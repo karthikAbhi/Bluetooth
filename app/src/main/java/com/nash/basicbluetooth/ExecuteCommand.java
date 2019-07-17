@@ -1,7 +1,5 @@
 package com.nash.basicbluetooth;
 
-import android.widget.Toast;
-
 import java.io.UnsupportedEncodingException;
 
 public class ExecuteCommand {

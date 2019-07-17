@@ -174,7 +174,7 @@
             android:contentDescription="Select the font"
             android:text="Select Font" />
 
-        <Button
+        <!--Button
             android:id="@+id/selCharCodeTableButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="Set or unset download set"
-            android:text="Set/Unset Download Char Set" />
+            android:text="Set/Unset Download Char Set" /-->
 
         <Button
             android:id="@+id/pageModeButton"
@@ -477,94 +477,143 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Select LSB-MSB direction in image"/>
-        <EditText
-            android:id="@+id/setPosHRICharEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:numeric="integer"
-            android:text="0"
-            android:hint="Enter value must be in between 0-3" />
-        <Button
-            android:id="@+id/setPosHRICharButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Set print position of HRI Characters"/>
-        <EditText
-            android:id="@+id/selectHRICharSizeEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:numeric="integer"
-            android:text="0"
-            android:hint="Enter value either 0 or 1" />
-        <Button
-            android:id="@+id/selectHRICharSizeButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Select HRI Character size"/>
-        <EditText
-            android:id="@+id/setBarcodeHeightEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:numeric="integer"
-            android:text="162"
-            android:hint="Enter value between 0 - 255" />
-        <Button
-            android:id="@+id/setBarcodeHeightButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Set Barcode Height"/>
-        <EditText
-            android:id="@+id/setBarcodeWidthEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:numeric="integer"
-            android:text="3"
-            android:hint="Enter value between 2-6" />
-        <Button
-            android:id="@+id/setBarcodeWidthButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Set Barcode width"/>
-        <EditText
-            android:id="@+id/setNWAspectOfBarcodeEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:numeric="integer"
-            android:text="1"
-            android:hint="Enter value between 0 - 2" />
-        <Button
-            android:id="@+id/setNWAspectOfBarcodeButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Set N:W aspect of the barcode"/>
 
-        <Button
-            android:id="@+id/printBarcodeButton"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Barcode" />
+            android:background="@drawable/customborder"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/setPosHRICharEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numeric="integer"
+                    android:text="0"
+                    android:hint="Enter value must be in between 0-3"/>
+                <Button
+                    android:id="@+id/setPosHRICharButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Set print position of HRI Characters"/>
+                <EditText
+                    android:id="@+id/selectHRICharSizeEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numeric="integer"
+                    android:text="0"
+                    android:hint="Enter value either 0 or 1"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/selectHRICharSizeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Select HRI Character size"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+                <EditText
+                    android:id="@+id/setBarcodeHeightEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numeric="integer"
+                    android:text="162"
+                    android:hint="Enter value between 0 - 255"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/setBarcodeHeightButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Set Barcode Height"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+                <EditText
+                    android:id="@+id/setBarcodeWidthEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numeric="integer"
+                    android:text="3"
+                    android:hint="Enter value between 2-6"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/setBarcodeWidthButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Set Barcode width"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+                <EditText
+                    android:id="@+id/setNWAspectOfBarcodeEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numeric="integer"
+                    android:text="1"
+                    android:hint="Enter value between 0 - 2"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+
+                <Button
+                    android:id="@+id/setNWAspectOfBarcodeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Set N:W aspect of the barcode"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"/>
+
+                <Spinner
+                    android:id="@+id/spinner_barcode_types"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:backgroundTint="@color/colorAccent">
+                </Spinner>
+
+                <EditText
+                    android:id="@+id/barcodeDataEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Enter Barcode data">
+                </EditText>
+
+                <Button
+                    android:id="@+id/printBarcodeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Barcode"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center" />
+            </TableLayout>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/initializePrinterButton"
@@ -639,6 +688,319 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="FF Pixels" />
-    </TableLayout>
 
+        <EditText
+            android:id="@+id/underLineEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:text="0"
+            android:hint="Enter value between 0 - 2" />
+        <Button
+            android:id="@+id/underLineButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Turn UnderLine Mode On/Off" />
+
+        <Button
+            android:id="@+id/setDefaultLineSpaceButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Set Default Line Spacing" />
+
+        <EditText
+            android:id="@+id/turnEmphasizedOnOffEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:text="0"
+            android:hint="Enter value between 0 - 255" />
+
+        <Button
+            android:id="@+id/turnEmphasizedOnOffButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Turn Emphasized mode On/Off" />
+
+        <EditText
+            android:id="@+id/selectPrintDirInPageModeEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:text="0"
+            android:hint="Enter value between 0 - 3" />
+
+        <Button
+            android:id="@+id/selectPrintDirInPageModeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Select Print Direction Page Mode" />
+
+        <EditText
+            android:id="@+id/selectJustificationEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:text="0"
+            android:hint="Enter value between 0 - 2" />
+
+        <Button
+            android:id="@+id/selectJustificationButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Select Justification" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <RadioGroup
+                android:id="@+id/radioGroup_QRType"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Correction Level:"
+                    android:textSize="20sp"
+                    android:layout_gravity="left"/>
+
+
+                <RadioButton
+                    android:id="@+id/qr_L"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="L"
+                    android:onClick="RadioButtonQRTypeSelected"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/qr_M"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="M"
+                    android:onClick="RadioButtonQRTypeSelected"/>
+                <RadioButton
+                    android:id="@+id/qr_Q"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Q"
+                    android:onClick="RadioButtonQRTypeSelected"/>
+                <RadioButton
+                    android:id="@+id/qr_H"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="H"
+                    android:onClick="RadioButtonQRTypeSelected"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/qrSizeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:numeric="integer"
+                android:text="0"
+                android:hint="(QR Size) Enter value between 0 - 255"
+                android:layout_weight="2"/>
+
+            <EditText
+                android:id="@+id/qrUserDataEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="(QR Data) Enter the QR data"
+                android:layout_weight="3"/>
+
+            <Button
+                android:id="@+id/qrCodeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Print QR Code"
+                android:layout_gravity="center"
+                android:layout_weight="4"/>
+        </LinearLayout>
+
+        <!--EditText
+            android:id="@+id/printDownldBitImgEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:hint="Enter value between 0 - 3" />
+
+        <Button
+            android:id="@+id/printDownldBitImgButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Print Downloaded Bit Image " /-->
+
+        <EditText
+            android:id="@+id/turnBlackWhiteRevPrintModeOnOffEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:text="0"
+            android:hint="Enter value between 0 - 255" />
+
+        <Button
+            android:id="@+id/turnBlackWhiteRevPrintModeOnOffButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Turn white/black reverse print mode on/off" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/customborder"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <RadioGroup
+                android:id="@+id/radioGroup_FunctionType"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Function Type: "
+                    android:textSize="20sp"
+                    android:layout_marginLeft="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/FT_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A"
+                    android:onClick="RadioButtonFuncTypeSelected"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/FT_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B"
+                    android:onClick="RadioButtonFuncTypeSelected"/>
+                <RadioButton
+                    android:id="@+id/FT_c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C"
+                    android:onClick="RadioButtonFuncTypeSelected"/>
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radioGroup_CutType"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cut Type: "
+                    android:textSize="20sp"
+                    android:layout_marginLeft="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/full_cut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Cut"
+                    android:onClick="RadioButtonCutTypeSelected"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/partial_cut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Partial Cut"
+                    android:onClick="RadioButtonCutTypeSelected"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/selectCutModeCutPaperEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:numeric="integer"
+                android:text="0"
+                android:hint="Enter value between 0 - 255"
+                android:layout_weight="3"/>
+
+            <Button
+                android:id="@+id/selectCutModeCutPaperButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Select cut mode and cut paper"
+                android:gravity="center"
+                android:layout_weight="4"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/controlTransferEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:numeric="integer"
+            android:hint="Enter value between 1 - 5" />
+        <Button
+            android:id="@+id/controlTransferButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Control Transfer" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/customborder"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <Button
+                android:id="@+id/pdf417Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="PDF417 Demo" />
+
+        </LinearLayout>
+    </TableLayout>
 </ScrollView>

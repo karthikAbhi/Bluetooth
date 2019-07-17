@@ -12,6 +12,7 @@ import java.util.UUID;
  *  Child class executing another thread for bluetooth connection since it's a blocking call
  */
 class ConnectThread extends Thread {
+
     private static final String TAG = "ConnectThread" ;
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;

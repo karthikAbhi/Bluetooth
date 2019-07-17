@@ -14,11 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.nash.mybluetoothprinterlibrary.MyBluetoothPrinter;
+//Nash - USB library package for Android
+import com.nash.mybluetoothprinterlibrary.*;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -26,6 +32,7 @@ import java.util.Calendar;
 public class CommandActivity extends AppCompatActivity {
 
 
+    private static final String TAG = "CommandActivity";
     private BluetoothDevice mBTDevice;
     private static ConnectThread mConnectThread;
     private MyBluetoothPrinter mMyBluetoothPrinter;
@@ -51,7 +58,7 @@ public class CommandActivity extends AppCompatActivity {
     private Button mSGRSCCommandButton;
     private Button mSPPMCommandButton;
     private Button mSelectFontCommandButton;
-    private Button mSelCharCodeTableCommandButton;
+    //private Button mSelCharCodeTableCommandButton;
     private Button mSpecifyDownldCharCommandButton;
     private Button mSetOrUnsetDCSCommandButton;
     private Button mSetLeftMarginCommandButton;
@@ -76,9 +83,34 @@ public class CommandActivity extends AppCompatActivity {
     private Button mPrintNVBitImageCommandButton;
     private Button mSelectNVBitImageCommandButton;
     private Button mDefineNVBitImageCommandButton;
+    private Button mtUOnOffCommandButton;
+    private Button mSDLSCommandButton;
+    private Button mTEMOnOffCommandButton;
+    private Button mSPDPMCommandButton;
+    private Button mSJCommandButton;
+    private Button mQRCodeCommandButton;
+    private Button mPDBICommandButton;
+    private Button mTurnWBRPOnOffCommandButton;
+    private Button mSCMCPCommandButton;
+    private Button mPDF417CommandButton;
 
-    // --- UI - EditText References ---
+    private RadioGroup mRadioGroupQR;
+    private RadioButton mRadioButtonQR;
 
+    private RadioGroup mRadioGroupFT;
+    private RadioButton mRadioButtonFT;
+    private RadioGroup mRadioGroupCT;
+    private RadioButton mRadioButtonCT;
+
+    private Spinner mBarcodeSpinner;
+    private int mBarcodeTypeSelected;
+
+    //Control Transfer
+    private Button mControlTransfer;
+
+    /**
+     * UI - EditText References
+     */
     private EditText mSampleTextEditText;
     private EditText mPDFF2FEditText;
     private EditText mPDFNLEditText;
@@ -91,7 +123,7 @@ public class CommandActivity extends AppCompatActivity {
     private EditText mSetOrUnsetDCSEditText;
     private EditText mSetLeftMarginEditText;
     private EditText mSetWidthOfPrintAreaEditText;
-    private EditText mSPAPMxaxisEditText,mSPAPMyaxisEditText,mSPAPMxlengthEditText,
+    private EditText mSPAPMxaxisEditText, mSPAPMyaxisEditText, mSPAPMxlengthEditText,
             mSPAPMylengthEditText;//mSpecifyPrintAreaOnPageModeEditText
     private EditText mSetPhysicalPositionEditText;
     private EditText mSetLogicalPositionEditText;
@@ -110,11 +142,22 @@ public class CommandActivity extends AppCompatActivity {
     private EditText mSetBarcodeHeightEditText;
     private EditText mSetBarcodeWidthEditText;
     private EditText mSetNWAspectBarcodeEditText;
+    private EditText mBarcodeDataEditText;
     private EditText mSetPrintDensityEditText;
     private EditText mSpecifyResponseParameterEditText;
     private EditText mInformSysTimeOfHostEditText;
     private EditText mFFIPIXELSEditText;
+    private EditText mUnderLineEditText;
+    private EditText mTEMOnOffEditText;
+    private EditText mSPDPMEditText;
+    private EditText mSJEditText;
+    private EditText mQRSizeEditText, mQRUserDataEditText;
+    private EditText mPDBIEditText;
+    private EditText mTurnWBRPOnOffEditText;
+    private EditText mSCMCPEditText;
 
+    //TODO Control Transfer
+    private EditText mControlTransferEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +200,8 @@ public class CommandActivity extends AppCompatActivity {
         mSLFEditText = findViewById(R.id.slfEditText);
         mSGRSCEditText = findViewById(R.id.sgrscEditText);
         mSPPMEditText = findViewById(R.id.sppmEditText);
-        mSelectFontEditText =findViewById(R.id.selFontEditText);
-        mSetOrUnsetDCSEditText = findViewById(R.id.setOrUnsetDCSetEditText);
+        mSelectFontEditText = findViewById(R.id.selFontEditText);
+        //mSetOrUnsetDCSEditText = findViewById(R.id.setOrUnsetDCSetEditText);
         mSetLeftMarginEditText = findViewById(R.id.setLeftMarginEditText);
         mSetWidthOfPrintAreaEditText = findViewById(R.id.setWidthOfPrintAreaEditText);
         mSPAPMxaxisEditText = findViewById(R.id.spapmxaxisEditText);
@@ -182,14 +225,24 @@ public class CommandActivity extends AppCompatActivity {
         mSetBarcodeHeightEditText = findViewById(R.id.setBarcodeHeightEditText);
         mSetBarcodeWidthEditText = findViewById(R.id.setBarcodeWidthEditText);
         mSetNWAspectBarcodeEditText = findViewById(R.id.setNWAspectOfBarcodeEditText);
+        mBarcodeDataEditText = findViewById(R.id.barcodeDataEditText);
         mSetPrintDensityEditText = findViewById(R.id.setPrintDensityEditText);
         mFFIPIXELSEditText = findViewById(R.id.ffinPixelsEditText);
+        mUnderLineEditText = findViewById(R.id.underLineEditText);
+        mTEMOnOffEditText = findViewById(R.id.turnEmphasizedOnOffEditText);
+        mSPDPMEditText = findViewById(R.id.selectPrintDirInPageModeEditText);
+        mSJEditText = findViewById(R.id.selectJustificationEditText);
+        mQRSizeEditText = findViewById(R.id.qrSizeEditText);
+        mQRUserDataEditText = findViewById(R.id.qrUserDataEditText);
+        //mPDBIEditText = findViewById(R.id.printDownldBitImgEditText);
+        mTurnWBRPOnOffEditText = findViewById(R.id.turnBlackWhiteRevPrintModeOnOffEditText);
+        mSCMCPEditText = findViewById(R.id.selectCutModeCutPaperEditText);
 
         // --- UI Components - Button Reference Creation ---
         //Print Text
         mPrintButton = findViewById(R.id.printButton);
         //Print Barcode
-        mPrintBarcodeButton = findViewById(R.id.printBarcodeButton);
+        //mPrintBarcodeButton = findViewById(R.id.printBarcodeButton);
         //LF Command
         mLFCommandButton = findViewById(R.id.lfCommandButton);
         //FF Command
@@ -209,11 +262,11 @@ public class CommandActivity extends AppCompatActivity {
         //Select the font Command (14.09)
         mSelectFontCommandButton = findViewById(R.id.selFontButton);
         //Select character code table Command (14.10)
-        mSelCharCodeTableCommandButton = findViewById(R.id.selCharCodeTableButton);
+        //mSelCharCodeTableCommandButton = findViewById(R.id.selCharCodeTableButton);
         //Specify download character Command (14.11)
-        mSpecifyDownldCharCommandButton = findViewById(R.id.specifyDownldCharButton);
+        //mSpecifyDownldCharCommandButton = findViewById(R.id.specifyDownldCharButton);
         //Set or unset download character set Command (14.12)
-        mSetOrUnsetDCSCommandButton = findViewById(R.id.setOrUnsetDCSetButton);
+        //mSetOrUnsetDCSCommandButton = findViewById(R.id.setOrUnsetDCSetButton);
         //Page Mode Command (14.13)
         mPMCommandButton = findViewById(R.id.pageModeButton);
         //Standard Mode Command (14.14)
@@ -256,6 +309,10 @@ public class CommandActivity extends AppCompatActivity {
         mSetBarcodeWidthCommandButton = findViewById(R.id.setBarcodeWidthButton);
         //Set N:W aspect of the barcode (14.32)
         mSetNWAspectBarcode = findViewById(R.id.setNWAspectOfBarcodeButton);
+        //Barcode Spinner
+        mBarcodeSpinner = findViewById(R.id.spinner_barcode_types);
+        //Print Barcode (14.33)
+        mPrintBarcodeButton = findViewById(R.id.printBarcodeButton);
         //Initialize Printer Command
         mInitializePrinterCommandButton = findViewById(R.id.initializePrinterButton);
         //Set print density (14.40)
@@ -268,6 +325,31 @@ public class CommandActivity extends AppCompatActivity {
         mInformSysTimeOfHostCommandButton = findViewById(R.id.infoSysTimeHostButton);
         //Feed form in pixels Command (14.54)
         mFFIPIXELSCommandButton = findViewById(R.id.ffinPixelsButton);
+        //Turn Underline button ON/OFF (14.70)
+        mtUOnOffCommandButton = findViewById(R.id.underLineButton);
+        //Select default line spacing (14.71)
+        mSDLSCommandButton = findViewById(R.id.setDefaultLineSpaceButton);
+        //Turn emphasized mode on/off (14.72)
+        mTEMOnOffCommandButton = findViewById(R.id.turnEmphasizedOnOffButton);
+        //Select print direction in page mode (14.73)
+        mSPDPMCommandButton = findViewById(R.id.selectPrintDirInPageModeButton);
+        //Select justification (14.74)
+        mSJCommandButton = findViewById(R.id.selectJustificationButton);
+        //Print QR Code (14.75) Part - 2
+        mRadioGroupQR = findViewById(R.id.radioGroup_QRType);
+        mRadioButtonQR = findViewById(R.id.qr_L);
+        mQRCodeCommandButton = findViewById(R.id.qrCodeButton);
+        //Print downloaded bit image (14.77)
+        //mPDBICommandButton = findViewById(R.id.printDownldBitImgButton);
+        //Turn white/black reverse print mode on/off (14.78)
+        mTurnWBRPOnOffCommandButton = findViewById(R.id.turnBlackWhiteRevPrintModeOnOffButton);
+        //Select cut mode and cut paper (14.79)
+        mRadioGroupFT = findViewById(R.id.radioGroup_FunctionType);
+        mRadioGroupCT = findViewById(R.id.radioGroup_CutType);
+        mRadioButtonFT = findViewById(R.id.FT_a);
+        mRadioButtonCT = findViewById(R.id.full_cut);
+        mSCMCPCommandButton = findViewById(R.id.selectCutModeCutPaperButton);
+        mPDF417CommandButton = findViewById(R.id.pdf417Button);
 
         // --- IMPLEMENTATION ---
 
@@ -361,16 +443,16 @@ public class CommandActivity extends AppCompatActivity {
             }
         });
         //TODO - Praveen need to provide more information
-        mSelCharCodeTableCommandButton.setOnClickListener(new View.OnClickListener() {
+        /*mSelCharCodeTableCommandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 byte[] a = new byte[1];
                 a[0] = (byte)0;//Default - 0
                 mMyBluetoothPrinter.ESC_T(a);
             }
-        });
+        });*/
         //TODO - Need to talk to Reddy sir
-        mSpecifyDownldCharCommandButton.setOnClickListener(new View.OnClickListener() {
+        /*mSpecifyDownldCharCommandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Will be implemented later
@@ -383,7 +465,7 @@ public class CommandActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mMyBluetoothPrinter.ESC_SDC(mSetOrUnsetDCSEditText.getText().toString());
             }
-        });
+        });*/
 
 
         mPMCommandButton.setOnClickListener(new View.OnClickListener() {
@@ -447,21 +529,21 @@ public class CommandActivity extends AppCompatActivity {
         //Set the vertical physical position in page mode (14.21)
         mSetVerticalPhysicalPositionOnPageModeCommandButton.
                 setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMyBluetoothPrinter.GS_VPP(mSetVerticalPhysicalPositionOnPageModeEditText.
-                        getText().toString());
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        mMyBluetoothPrinter.GS_VPP(mSetVerticalPhysicalPositionOnPageModeEditText.
+                                getText().toString());
+                    }
+                });
         //Set the vertical logical position on page mode (14.22)
         mSetVerticalLogicalPositionOnPageModeCommandButton.
                 setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMyBluetoothPrinter.GS_VLP(mSetVerticalLogicalPositionOnPageModeEditText.
-                        getText().toString());
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        mMyBluetoothPrinter.GS_VLP(mSetVerticalLogicalPositionOnPageModeEditText.
+                                getText().toString());
+                    }
+                });
         //Print bit image (14.23)
         mPrintBitImageCommandButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -498,17 +580,16 @@ public class CommandActivity extends AppCompatActivity {
         mDefineNVBitImageCommandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    if(Integer.parseInt(mNumberOfNVBitImagesEditText.getText().toString()) > 0){
+                try {
+                    if (Integer.parseInt(mNumberOfNVBitImagesEditText.getText().toString()) > 0) {
                         pickNVBitImage();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getApplicationContext(),
                                 "Enter number of NV bit Images to be defined",
                                 Toast.LENGTH_SHORT).show();
                     }
-                }catch (NumberFormatException e){
-                    Log.e("Error",e.getMessage());
+                } catch (NumberFormatException e) {
+                    Log.e("Error", e.getMessage());
                 }
 
 
@@ -565,14 +646,94 @@ public class CommandActivity extends AppCompatActivity {
         });
 
         //Print Barcode (14.33)
-        mPrintBarcodeButton.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> barcodeAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.barcode_types));
+        barcodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBarcodeSpinner.setAdapter(barcodeAdapter);
+
+        mBarcodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                //printBarcode();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mBarcodeTypeSelected = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mBarcodeTypeSelected = 0;
             }
         });
 
-        //Initialize the mMyBluetoothPrinter (14.34)
+        mPrintBarcodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                switch (mBarcodeTypeSelected) {
+                    case 0:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.UPC_A, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 1:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.UPC_E, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 2:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.JAN13, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 3:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.JAN8, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 4:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.CODE39, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 5:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.ITF, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 6:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.CODABAR, mBarcodeDataEditText.getText().toString());
+                        break;
+                    case 7:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.CODE93, mBarcodeDataEditText.getText().toString());
+                        break;
+                    default:
+                        mMyBluetoothPrinter.GS_k(BarcodeType.UPC_A, mBarcodeDataEditText.getText().toString());
+                        break;
+                }
+
+                /*switch(mBarcodeTypeSelected){
+                    case 0: printer.GS_k(BarcodeType.UPC_A, "72527273070");
+                        break;
+                    case 1: printer.GS_k(BarcodeType.UPC_E, "01150000066");
+                        break;
+                    case 2: printer.GS_k(BarcodeType.JAN13, "122245678931");
+                        break;
+                    case 3: printer.GS_k(BarcodeType.JAN8, "1245678");
+                        break;
+                    case 4: printer.GS_k(BarcodeType.CODE39, "1AE% ");
+                        break;
+                    case 5: printer.GS_k(BarcodeType.ITF, "1456");
+                        break;
+                    case 6: printer.GS_k(BarcodeType.CODABAR, "A12345A");
+                        break;
+                    case 7: printer.GS_k(BarcodeType.CODE93, "A12345A");
+                        break;
+                    default: printer.GS_k(BarcodeType.UPC_A, "72527273070");
+                        break;
+                }*/
+
+                //printBarcode();
+                //printer.GS_k(BarcodeType.UPC_A, "72527273070");
+                //printer.GS_k(BarcodeType.UPC_E, "01150000066");
+                //printer.GS_k(BarcodeType.JAN13, "122245678931");
+                //printer.GS_k(BarcodeType.JAN8, "1245678");
+                //printer.GS_k(BarcodeType.CODE39, "1AE% ");
+                //printer.GS_k(BarcodeType.ITF, "1456");
+                //printer.GS_k(BarcodeType.CODABAR, "A12345A");
+                //printer.GS_k(BarcodeType.CODE93, "A12345A");
+
+
+            }
+        });
+
+        //Initialize the printer (14.34)
         mInitializePrinterCommandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -612,11 +773,11 @@ public class CommandActivity extends AppCompatActivity {
             public void onClick(View v) {
                 byte[] a = new byte[6];
                 a[0] = (byte) Calendar.getInstance().get(Calendar.SECOND);//d1 - second
-                a[1] = (byte)Calendar.getInstance().get(Calendar.MINUTE);//d2 - minute
-                a[2] = (byte)Calendar.getInstance().get(Calendar.HOUR);//d3 - hour
-                a[3] = (byte)Calendar.getInstance().get(Calendar.DAY_OF_MONTH);//d4 - day
-                a[4] = (byte)Calendar.getInstance().get(Calendar.MONTH);//d5 - month
-                a[5] = (byte)Calendar.getInstance().get(Calendar.YEAR);//d6 - year
+                a[1] = (byte) Calendar.getInstance().get(Calendar.MINUTE);//d2 - minute
+                a[2] = (byte) Calendar.getInstance().get(Calendar.HOUR);//d3 - hour
+                a[3] = (byte) Calendar.getInstance().get(Calendar.DAY_OF_MONTH);//d4 - day
+                a[4] = (byte) Calendar.getInstance().get(Calendar.MONTH);//d5 - month
+                a[5] = (byte) Calendar.getInstance().get(Calendar.YEAR);//d6 - year
 
                 mMyBluetoothPrinter.GS_i(a);
             }
@@ -631,6 +792,158 @@ public class CommandActivity extends AppCompatActivity {
                 mMyBluetoothPrinter.GS_d(mFFIPIXELSEditText.getText().toString());
             }
         });
+
+        //Turn Underline button ON/OFF (14.70)
+        mtUOnOffCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.ESC_hyphen(mUnderLineEditText.getText().toString());
+            }
+        });
+        //Select default line spacing (14.71)
+        mSDLSCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.ESC_2();
+            }
+        });
+
+        //Turn emphasized mode on/off (14.72)
+        mTEMOnOffCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.ESC_E(mTEMOnOffEditText.getText().toString());
+            }
+        });
+
+        //Select print direction in page mode (14.73)
+        mSPDPMCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.ESC_T(mSPDPMCommandButton.getText().toString());
+            }
+        });
+
+        //Select justification (14.74)
+        mSJCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.ESC_a(mSJEditText.getText().toString());
+            }
+        });
+
+        //Set up and print the symbol (14.75)
+
+        //Print QR Code (14.75) Part - 2
+        mQRCodeCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRadioButtonQR.getText().toString().equals("L")) {
+                    mMyBluetoothPrinter.QrCode(mQRSizeEditText.getText().toString(), QRErrCorrLvl.L,
+                            mQRUserDataEditText.getText().toString());
+                } else if (mRadioButtonQR.getText().toString().equals("M")) {
+                    mMyBluetoothPrinter.QrCode(mQRSizeEditText.getText().toString(), QRErrCorrLvl.M,
+                            mQRUserDataEditText.getText().toString());
+                } else if (mRadioButtonQR.getText().toString().equals("Q")) {
+                    mMyBluetoothPrinter.QrCode(mQRSizeEditText.getText().toString(), QRErrCorrLvl.Q,
+                            mQRUserDataEditText.getText().toString());
+                } else if (mRadioButtonQR.getText().toString().equals("H")) {
+                    mMyBluetoothPrinter.QrCode(mQRSizeEditText.getText().toString(), QRErrCorrLvl.H,
+                            mQRUserDataEditText.getText().toString());
+                }
+            }
+        });
+
+
+        /*//Print downloaded bit image (14.77)
+        mPDBICommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.GS_FS(mPDBIEditText.getText().toString());
+            }
+        });*/
+
+        //Turn white/black reverse print mode on/off (14.78)
+        mTurnWBRPOnOffCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.GS_B(mTurnWBRPOnOffEditText.getText().toString());
+            }
+        });
+
+        //Select cut mode and cut paper (14.79)
+        mSCMCPCommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRadioButtonCT.getText().toString().equals("Full Cut")) {
+                    if (mRadioButtonFT.getText().toString().equals("A")) {
+                        mMyBluetoothPrinter.GS_V(FunctionType.A, CutCommand.FULLCUT, mSCMCPEditText.getText().toString());
+                    } else if (mRadioButtonFT.getText().toString().equals("B")) {
+                        mMyBluetoothPrinter.GS_V(FunctionType.B, CutCommand.FULLCUT, mSCMCPEditText.getText().toString());
+                    } else if (mRadioButtonFT.getText().toString().equals("C")) {
+                        mMyBluetoothPrinter.GS_V(FunctionType.C, CutCommand.FULLCUT, mSCMCPEditText.getText().toString());
+                    }
+                } else if (mRadioButtonCT.getText().toString().equals("Partial Cut")) {
+                    if (mRadioButtonFT.getText().toString().equals("A")) {
+                        mMyBluetoothPrinter.GS_V(FunctionType.A, CutCommand.PARTIALCUT, mSCMCPEditText.getText().toString());
+                    } else if (mRadioButtonFT.getText().toString().equals("B")) {
+                        mMyBluetoothPrinter.GS_V(FunctionType.B, CutCommand.PARTIALCUT, mSCMCPEditText.getText().toString());
+                    } else if (mRadioButtonFT.getText().toString().equals("C")) {
+                        mMyBluetoothPrinter.GS_V(FunctionType.C, CutCommand.PARTIALCUT, mSCMCPEditText.getText().toString());
+                    }
+                }
+            }
+        });
+
+
+        //Basic Print Command
+        mPrintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.printText(mSampleTextEditText.getText().toString());
+                //printer.printAdditionalBarcode(ExtraBarcodeType.CODE128, "500", "300",
+                //       "0905", ImageMode.NORMAL);
+                //TODO: UI
+                /*printer.printPDF417("5","24",
+                        PDF417ErrorCorrectionMode.LEVEL,
+                        PDF417ErrorCorrectionLevel.LEVEL0,
+                        PDF417Options.STANDARD,
+                        "Hello there.. Karthik");*/
+
+                //printer.code93(BarcodeType.CODE93,"ABCDEFG");
+                //printer.code128(BarcodeType.CODE128,mSampleTextEditText.getText().toString(),
+                //CODE128Subset.SUBSETC);
+
+
+            }
+        });
+
+        //PDF417 Command
+        mPDF417CommandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyBluetoothPrinter.printPDF417("3",
+                        "10",
+                        PDF417ErrorCorrectionMode.LEVEL,
+                        PDF417ErrorCorrectionLevel.LEVEL0,
+                        PDF417Options.STANDARD,
+                        "Nash Industries (I) Pvt. Ltd.");
+            }
+        });
+
+        //TODO Control Transfer
+        /*mControlTransfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                byte[] dataReceivedFromPrinter = new byte[16];  //For Understanding purpose only
+                dataReceivedFromPrinter = mMyBluetoothPrinter.controlTransfer();
+                Toast.makeText(getApplicationContext(), dataReceivedFromPrinter.toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });*/
+        /*
+        Change button to btn
+         */
     }
 
     /**
@@ -791,7 +1104,7 @@ public class CommandActivity extends AppCompatActivity {
             if(extras != null){
                 //Get Image from Gallery
                 Bitmap bmp = extras.getParcelable("data");
-                mMyBluetoothPrinter.GS_V(bmp, mModeOfRasterBitEditText.getText().toString());
+                mMyBluetoothPrinter.GS_v(bmp, mModeOfRasterBitEditText.getText().toString());
             }
         }
         //NV Bit Image Selection
@@ -838,6 +1151,76 @@ public class CommandActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Invalid!",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /**
+     * Callback method for Radiogroup - Function Type
+     * @param view - Radiobutton selected
+     */
+    public void RadioButtonFuncTypeSelected(View view){
+        int radioButtonId = mRadioGroupFT.getCheckedRadioButtonId();
+        mRadioButtonFT = findViewById(radioButtonId);
+
+        Toast.makeText(this, "Function Mode: "+ mRadioButtonFT.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Callback method for Radiogroup - Cut Type
+     * @param view
+     */
+    public void RadioButtonCutTypeSelected(View view){
+        int radioButtonId = mRadioGroupCT.getCheckedRadioButtonId();
+        mRadioButtonCT = findViewById(radioButtonId);
+
+        Toast.makeText(this, "Cut Mode: "+ mRadioButtonCT.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Callback method for Radiogroup - QR Correction Type
+     * @param view
+     */
+    public void RadioButtonQRTypeSelected(View view){
+        int radioButtonId = mRadioGroupQR.getCheckedRadioButtonId();
+        mRadioButtonQR = findViewById(radioButtonId);
+
+        Toast.makeText(this, "QR Correction Level: "+ mRadioButtonQR.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mMyBluetoothPrinter == null){
+            //mMyBluetoothPrinter = MyBluetoothPrinter.getInstance(context);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "In onPause()");
+        Log.i(TAG, "Going to onStop()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "In onStop()");
+        Log.i(TAG, "Going to onDestroy()");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "In onRestart()");
+        Log.i(TAG, "Going to onStart()");
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "In onStart()");
+        Log.i(TAG, "Going to onResume()");
     }
 
     @Override

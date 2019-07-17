@@ -12,17 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MyBluetoothService {
-    private static final String TAG = "MY_APP_DEBUG_TAG";
-
-    // Defines several constants used when transmitting messages between the
-    // service and the UI.
-    private interface MessageConstants {
-        public final int MESSAGE_READ = 0;
-        public final int MESSAGE_WRITE = 1;
-        public final int MESSAGE_TOAST = 2;
-
-        // ... (Add other message types here as needed.)
-    }
+    private static final String TAG = "MyBluetoothService";
 
     static class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
@@ -30,6 +20,7 @@ public class MyBluetoothService {
         private final OutputStream mmOutStream;
         private byte[] mmBuffer; // mmBuffer store for the stream
         private static Handler handler; // handler that gets info from Bluetooth service
+        private boolean mPRCDONE = true;
 
         public ConnectedThread(BluetoothSocket socket) {
             mmSocket = socket;
@@ -62,12 +53,9 @@ public class MyBluetoothService {
             while (true) {
                 try {
                     // Read from the InputStream.
-                    numBytes = mmInStream.read(mmBuffer);
-                    // Send the obtained bytes to the UI activity.
-                    Message readMsg = handler.obtainMessage(
-                            MessageConstants.MESSAGE_READ, numBytes, -1,
-                            mmBuffer);
-                    readMsg.sendToTarget();
+                    mmInStream.read(mmBuffer);
+                    System.out.println(mmBuffer);
+                    mPRCDONE = true;
                 } catch (IOException e) {
                     Log.d(TAG, "Input stream was disconnected", e);
                     break;
@@ -75,9 +63,8 @@ public class MyBluetoothService {
             }
         }
 
-        // Call this from the main activity to send data to the remote device.
-        public void write(byte[] bytes) throws IOException {
-                mmOutStream.write(bytes);
+        public void write(byte[] bytes) throws IOException{
+            mmOutStream.write(bytes);
         }
 
         // Call this method from the main activity to shut down the connection.
@@ -88,5 +75,42 @@ public class MyBluetoothService {
                 Log.e(TAG, "Could not close the connect socket", e);
             }
         }
+
+        // Call this from the main activity to send data to the remote device.
+        /*public  void write(byte[] bytes) throws IOException {
+            int offset = 0;
+            int diff = 500;
+            int length = diff;
+            if(mPRCDONE){
+
+                int totallength = bytes.length;
+
+                while(totallength > diff){
+
+                    mmOutStream.write(bytes, offset, length);
+                    offset = offset + length;
+                    length = length + diff;
+                    if(length > totallength){
+                        length = totallength;
+                        totallength = totallength - length;
+                    }
+                    else{
+                        totallength = totallength - length;
+                    }
+                    mPRCDONE = false;
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(totallength < diff){
+                    mmOutStream.write(bytes);
+                }
+            }
+            else{
+                System.out.println("Error");
+            }
+        }*/
     }
 }

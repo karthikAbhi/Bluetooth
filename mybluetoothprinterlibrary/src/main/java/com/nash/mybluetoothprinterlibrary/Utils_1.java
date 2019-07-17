@@ -14,110 +14,16 @@ import java.util.List;
 
 public class Utils_1 {
     // UNICODE 0x23 = #
-    public static final byte[] UNICODE_TEXT = new byte[] {0x23, 0x23, 0x23,
+    /*public static final byte[] UNICODE_TEXT = new byte[] {0x23, 0x23, 0x23,
             0x23, 0x23, 0x23,0x23, 0x23, 0x23,0x23, 0x23, 0x23,0x23, 0x23, 0x23,
             0x23, 0x23, 0x23,0x23, 0x23, 0x23,0x23, 0x23, 0x23,0x23, 0x23, 0x23,
-            0x23, 0x23, 0x23};
+            0x23, 0x23, 0x23};*/
 
     private static String hexStr = "0123456789ABCDEF";
     private static String[] binaryArray = { "0000", "0001", "0010", "0011",
             "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011",
             "1100", "1101", "1110", "1111" };
 
-    public static byte[] decodeBitmap(Bitmap bmp, String mode){
-        int bmpWidth = bmp.getWidth();
-        int bmpHeight = bmp.getHeight();
-
-        List<String> list = new ArrayList<String>(); //binaryString list
-        StringBuffer sb;
-
-
-        int bitLen = bmpWidth / 8;
-        int zeroCount = bmpWidth % 8;
-
-        String zeroStr = "";
-        if (zeroCount > 0) {
-            bitLen = bmpWidth / 8 + 1;
-            for (int i = 0; i < (8 - zeroCount); i++) {
-                zeroStr = zeroStr + "0";
-            }
-        }
-
-        for (int i = 0; i < bmpHeight; i++) {
-            sb = new StringBuffer();
-            for (int j = 0; j < bmpWidth; j++) {
-                int color = bmp.getPixel(j, i);
-
-                int redValue = Color.red(color);
-                int blueValue = Color.blue(color);
-                int greenValue = Color.green(color);
-
-                int r = (color >> 15) & 0xff;
-                int g = (color >> 8) & 0xff;
-                int b = color & 0xff;
-
-                // if color close to white，bit='0', else bit='1'
-                if (r > 0 && g > 0 && b > 0)
-                    sb.append("0");
-                else
-                    sb.append("1");
-            }
-            if (zeroCount > 0) {
-                sb.append(zeroStr);
-            }
-            list.add(sb.toString());
-        }
-
-        List<String> bmpHexList = binaryListToHexStringList(list);
-        String commandHexString = "1D7630"+mode;
-
-        String widthHexString = Integer
-                .toHexString(bmpWidth % 8 == 0 ? bmpWidth / 8
-                        : (bmpWidth / 8 + 1));
-
-        if(widthHexString.length() == 4){
-            widthHexString = widthHexString.substring(2,3) + widthHexString.substring(0,1);
-        }
-        else if (widthHexString.length() == 3) {
-            widthHexString = "0"+widthHexString;
-            widthHexString = widthHexString.substring(2,3) + widthHexString.substring(0,1);
-        }
-        else if (widthHexString.length() == 2) {
-            widthHexString = widthHexString + "00";
-        }
-        else if (widthHexString.length() == 1){
-            widthHexString = "0" + widthHexString + "00";
-        }
-        else{
-            Log.e("decodeBitmap error", "width is incorrect");
-        }
-
-        String heightHexString = Integer.toHexString(bmpHeight);
-
-        if(heightHexString.length() == 4){
-            heightHexString = heightHexString.substring(2,3) + heightHexString.substring(0,1);
-        }
-        else if (heightHexString.length() == 3) {
-            heightHexString = "0"+heightHexString;
-            Log.e("decodeBitmap error", " width is too large");
-            heightHexString = heightHexString.substring(2,4) + heightHexString.substring(0,2);
-        }
-        else if (heightHexString.length() == 2) {
-            heightHexString = heightHexString + "00";
-        }
-        else if (heightHexString.length() == 1){
-            heightHexString = "0" + heightHexString + "00";
-        }
-        else{
-            Log.e("decodeBitmap error", "width is incorrect");
-        }
-
-        List<String> commandList = new ArrayList<String>();
-        commandList.add(commandHexString+widthHexString+heightHexString);
-        commandList.addAll(bmpHexList);
-
-        return hexList2Byte(commandList);
-    }
 
     public static List<String> binaryListToHexStringList(List<String> list) {
         List<String> hexList = new ArrayList<String>();
@@ -365,4 +271,99 @@ public class Utils_1 {
 
         return hexList2Byte(commandList);
     }
+
+    /*public static byte[] decodeBitmap(Bitmap bmp, String mode){
+        int bmpWidth = bmp.getWidth();
+        int bmpHeight = bmp.getHeight();
+
+        List<String> list = new ArrayList<String>(); //binaryString list
+        StringBuffer sb;
+
+
+        int bitLen = bmpWidth / 8;
+        int zeroCount = bmpWidth % 8;
+
+        String zeroStr = "";
+        if (zeroCount > 0) {
+            bitLen = bmpWidth / 8 + 1;
+            for (int i = 0; i < (8 - zeroCount); i++) {
+                zeroStr = zeroStr + "0";
+            }
+        }
+
+        for (int i = 0; i < bmpHeight; i++) {
+            sb = new StringBuffer();
+            for (int j = 0; j < bmpWidth; j++) {
+                int color = bmp.getPixel(j, i);
+
+                int redValue = Color.red(color);
+                int blueValue = Color.blue(color);
+                int greenValue = Color.green(color);
+
+                int r = (color >> 15) & 0xff;
+                int g = (color >> 8) & 0xff;
+                int b = color & 0xff;
+
+                // if color close to white，bit='0', else bit='1'
+                if (r > 0 && g > 0 && b > 0)
+                    sb.append("0");
+                else
+                    sb.append("1");
+            }
+            if (zeroCount > 0) {
+                sb.append(zeroStr);
+            }
+            list.add(sb.toString());
+        }
+
+        List<String> bmpHexList = binaryListToHexStringList(list);
+        String commandHexString = "1D7630"+mode;
+
+        String widthHexString = Integer
+                .toHexString(bmpWidth % 8 == 0 ? bmpWidth / 8
+                        : (bmpWidth / 8 + 1));
+
+        if(widthHexString.length() == 4){
+            widthHexString = widthHexString.substring(2,3) + widthHexString.substring(0,1);
+        }
+        else if (widthHexString.length() == 3) {
+            widthHexString = "0"+widthHexString;
+            widthHexString = widthHexString.substring(2,3) + widthHexString.substring(0,1);
+        }
+        else if (widthHexString.length() == 2) {
+            widthHexString = widthHexString + "00";
+        }
+        else if (widthHexString.length() == 1){
+            widthHexString = "0" + widthHexString + "00";
+        }
+        else{
+            Log.e("decodeBitmap error", "width is incorrect");
+        }
+
+        String heightHexString = Integer.toHexString(bmpHeight);
+
+        if(heightHexString.length() == 4){
+            heightHexString = heightHexString.substring(2,3) + heightHexString.substring(0,1);
+        }
+        else if (heightHexString.length() == 3) {
+            heightHexString = "0"+heightHexString;
+            Log.e("decodeBitmap error", " width is too large");
+            heightHexString = heightHexString.substring(2,4) + heightHexString.substring(0,2);
+        }
+        else if (heightHexString.length() == 2) {
+            heightHexString = heightHexString + "00";
+        }
+        else if (heightHexString.length() == 1){
+            heightHexString = "0" + heightHexString + "00";
+        }
+        else{
+            Log.e("decodeBitmap error", "width is incorrect");
+        }
+
+        List<String> commandList = new ArrayList<String>();
+        commandList.add(commandHexString+widthHexString+heightHexString);
+        commandList.addAll(bmpHexList);
+
+        return hexList2Byte(commandList);
+    }*/
 }
